@@ -11,6 +11,7 @@ const EventCard = ({
   label,
   small = false,
   ...props
+  
 }) => (
     <div
       data-testid="card-testid"
