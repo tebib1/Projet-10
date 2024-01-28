@@ -1,43 +1,34 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useData } from "../../contexts/DataContext";
 import { getMonth } from "../../helpers/Date";
+
 import "./style.scss";
 
 const Slider = () => {
   const { data } = useData();
   const [index, setIndex] = useState(0);
-  const timerRef = useRef(null); // Utilisez useRef pour garder une référence au timer.
-
+  const byDateDesc = data?.focus.sort((evtA, evtB) =>
+    new Date(evtA.date) > new Date(evtB.date) ? -1 : 1
+  );
+  const nextCard = () => {
+    setTimeout(
+      () => setIndex(index < byDateDesc.length -1 ? index + 1 : 0),
+      5000
+    );
+  };
   useEffect(() => {
-    if (data && data.focus.length > 1) {
-      const byDateDesc = [...data.focus].sort((evtA, evtB) =>
-        new Date(evtA.date) < new Date(evtB.date) ? -1 : 1
-      );
-
-      // Nettoyez le timer précédent s'il existe.
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-
-      // Définissez le nouveau timer.
-      timerRef.current = setTimeout(() => {
-        setIndex((prevIndex) => (prevIndex < byDateDesc.length - 1 ? prevIndex + 1 : 0));
-      }, 5000);
-
-      // Nettoyez le timer lors du démontage de l'effet.
-      return () => {
-        if (timerRef.current) {
-          clearTimeout(timerRef.current);
-        }
-      };
-    }
-  }, [data]);
-
+    nextCard();
+  });
   return (
     <div className="SlideCardList">
-      {data?.focus.map((event, idx) => (
-        event && (
-          <div key={event.id} className={`SlideCard SlideCard--${index === idx ? "display" : "hide"}`}>
+      {byDateDesc?.map((event, idx) => (
+        <>
+          <div
+            key={event.title}
+            className={`SlideCard SlideCard--${
+              index === idx ? "display" : "hide"
+            }`}
+          >
             <img src={event.cover} alt="forum" />
             <div className="SlideCard__descriptionContainer">
               <div className="SlideCard__description">
@@ -47,21 +38,20 @@ const Slider = () => {
               </div>
             </div>
           </div>
-        )
+          <div className="SlideCard__paginationContainer">
+            <div className="SlideCard__pagination">
+              {byDateDesc.map((value, radioIdx) => (
+                <input
+                  key={`${event.title}.${value.id}`}
+                  type="radio"
+                  name="radio-button"
+                  checked={index === radioIdx}
+                />
+              ))}
+            </div>
+          </div>
+        </>
       ))}
-      <div className="SlideCard__paginationContainer">
-        <div className="SlideCard__pagination">
-          {data?.focus.map((_, radioIdx) => (
-            <input
-              key={data.focus[radioIdx].id}
-              type="radio"
-              name="radio-button"
-              checked={index === radioIdx}
-              onChange={() => setIndex(radioIdx)}
-            />
-          ))}
-        </div>
-      </div>
     </div>
   );
 };
