@@ -16,7 +16,8 @@ const Select = ({
   const [value, setValue] = useState();
   const [collapsed, setCollapsed] = useState(true);
   const changeValue = (newValue) => {
-    onChange();
+    // La fonction changeValue est modifiée pour assurer la fermeture du menu déroulant après la sélection.
+    onChange(newValue);
     setValue(newValue);
     setCollapsed(newValue);
   };
