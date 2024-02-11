@@ -14,6 +14,7 @@ import { useData } from "../../contexts/DataContext";
 
 const Page = () => {
   const { data } = useData();
+  // Recuperation de la dernière prestation à partir des données
   const last = data?.events.sort((evtA, evtB) =>
         new Date(evtA.date) < new Date(evtB.date) ? 1 : -1)[0];
   return <>
@@ -118,6 +119,7 @@ const Page = () => {
     <footer className="row">
       <div className="col presta">
         <h3>Notre derniére prestation</h3>
+           {/* Dernière prestation avec image, titre et date */}
         {last &&<EventCard 
           imageSrc={last?.cover }
           title={last?.title}

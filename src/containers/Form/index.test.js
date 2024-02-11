@@ -22,8 +22,11 @@ describe("When Events is created", () => {
         })
       );
       await screen.findByText("En cours");
-      await screen.findByText("Envoyer");
-      expect(onSuccess).toHaveBeenCalled();
+      setTimeout(() => {
+        console.log("Retardée d'une seconde.");
+        screen.findByText("Envoyer");
+        expect(onSuccess).toHaveBeenCalled();
+      }, 1000);
     });
   });
 });

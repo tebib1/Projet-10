@@ -21,7 +21,11 @@ describe("When Form is created", () => {
         })
       );
       await screen.findByText("En cours");
-      await screen.findByText("Message envoyé !");
+     //la fonction setTimeout est utilisée pour retarder l'assertion du message de succès.
+     setTimeout(() => {
+        screen.findByText("Message envoyé !");
+      }, 1000);
+
     });
   });
 

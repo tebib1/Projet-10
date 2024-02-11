@@ -19,7 +19,8 @@ const Select = ({
     // La fonction changeValue est modifiée pour assurer la fermeture du menu déroulant après la sélection.
     onChange(newValue);
     setValue(newValue);
-    setCollapsed(newValue);
+     // La logique de setCollapsed est corrigée pour inverser la valeur de collapsed
+    setCollapsed(!collapsed);
   };
   return (
     <div className={`SelectContainer ${type}`} data-testid="select-testid">

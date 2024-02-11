@@ -7,15 +7,19 @@ import "./style.scss";
 const Slider = () => {
   const { data } = useData();
   const [index, setIndex] = useState(0);
+    // Tri des événements par date dans l'ordre décroissant
   const byDateDesc = data?.focus.sort((evtA, evtB) =>
     new Date(evtA.date) > new Date(evtB.date) ? -1 : 1
   );
+
+   // Fonction pour passer à la prochaine carte après 5 secondes
   const nextCard = () => {
     setTimeout(
       () => setIndex(index < byDateDesc.length -1 ? index + 1 : 0),
       5000
     );
   };
+
   useEffect(() => {
     nextCard();
   });
@@ -38,6 +42,8 @@ const Slider = () => {
               </div>
             </div>
           </div>
+          {/*une synchronisation
+           correcte entre les diapositives et les boutons de pagination.*/}
           <div className="SlideCard__paginationContainer">
             <div className="SlideCard__pagination">
               {byDateDesc.map((value, radioIdx) => (
@@ -45,7 +51,7 @@ const Slider = () => {
                   key={`${event.title}.${value.id}`}
                   type="radio"
                   name="radio-button"
-                  checked={index === radioIdx}
+                  checked={index=== radioIdx}
                 />
               ))}
             </div>
